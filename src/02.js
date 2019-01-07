@@ -65,10 +65,15 @@ function users (state=usersInitialState, { type, payload }) {
   switch (type) {
     case GET_USER:
       /* Implement get user here! */
+      return state.filter(user => user.id === payload.id)
     case ADD_USER:
       /* Implement add user here! */
+      let maxId = state.reduce((acc, user) => { user.id > acc ? acc = user.id : acc }, 0)
+      const user = {id: maxId + 1, ...payload}
+      return [...state, user]
     case REMOVE_USER:
       /* Implement remove user here! */
+      return state.filter(user => user.id !== payload.id)
     default:
       return state
   }
@@ -82,6 +87,7 @@ function users (state=usersInitialState, { type, payload }) {
 */
 const reducers = redux.combineReducers({ todos, users })
 const store = redux.createStore(reducers)
+//REDUCER NAME DETERMINES THE KEYS OF THE DATA
 
 // Notice the keys that are returned from this invocation!
 console.log('INITIAL STATE:', store.getState())
@@ -99,8 +105,8 @@ console.log('AFTER COMPLETING TODOS:', store.getState())
   in the following dispatches.
 */
 
-// store.dispatch({ type: GET_USER, payload: { id: 1 } })
-// store.dispatch({ type: REMOVE_USER, payload: { id: 1 } })
-// store.dispatch({ type: ADD_USER, payload: { email: 'scott.hurlow@galvanize.com' } })
+store.dispatch({ type: GET_USER, payload: { id: 1 } })
+store.dispatch({ type: REMOVE_USER, payload: { id: 1 } })
+store.dispatch({ type: ADD_USER, payload: { email: 'scott.hurlow@galvanize.com' } })
 //
-// console.log('AFTER COMPLETING USER CHANGES:', store.getState())
+console.log('AFTER COMPLETING USER CHANGES:', store.getState())
